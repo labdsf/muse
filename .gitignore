@@ -22,3 +22,5 @@
 /texi/muse.toc
 /texi/muse.tp
 /texi/muse.vr
+.cask/
+dist/
