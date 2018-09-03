@@ -144,74 +144,88 @@ the time."
 ;;; Regexps used to define Muse publishing syntax
 
 (defcustom muse-list-item-regexp
-  (concat "^%s\\(\\([^\n" muse-regexp-blank "].*?\\)?::"
-          "\\(?:[" muse-regexp-blank "]+\\|$\\)"
-          "\\|[" muse-regexp-blank "]-[" muse-regexp-blank "]*"
-          "\\|[" muse-regexp-blank "][0-9]+\\.[" muse-regexp-blank "]*\\)")
+  (rx line-start (regexp "%s")
+      (group (or (seq (optional (group (not (any blank "\n"))
+                                       (minimal-match (0+ not-newline))))
+                      "::"
+                      (or (1+ blank) eol))
+                 (seq blank "-" (0+ blank))
+                 (seq blank (1+ (any "0-9")) "." (0+ blank)))))
   "Regexp used to match the beginning of a list item.
 The `%s' will be replaced with a whitespace regexp when publishing."
   :type 'regexp
   :group 'muse-regexp)
 
-(defcustom muse-ol-item-regexp (concat "\\`[" muse-regexp-blank "]+[0-9]+\\.")
+(defcustom muse-ol-item-regexp
+  (rx buffer-start (1+ blank) (1+ (any "0-9")) ".")
   "Regexp used to match an ordered list item."
   :type 'regexp
   :group 'muse-regexp)
 
-(defcustom muse-ul-item-regexp (concat "\\`[" muse-regexp-blank "]+-")
+(defcustom muse-ul-item-regexp
+  (rx buffer-start (1+ blank) "-")
   "Regexp used to match an unordered list item."
   :type 'regexp
   :group 'muse-regexp)
 
 (defcustom muse-dl-term-regexp
-  (concat "[" muse-regexp-blank "]*\\(.+?\\)["
-          muse-regexp-blank "]+::\\(?:[" muse-regexp-blank "]+\\|$\\)")
+  (rx (0+ blank)
+      (group (minimal-match (1+ not-newline)))
+      (1+ blank)
+      "::"
+      (or (1+ blank) eol))
   "Regexp used to match a definition list term.
 The first match string must contain the term."
   :type 'regexp
   :group 'muse-regexp)
 
-(defcustom muse-dl-entry-regexp (concat "\\`[" muse-regexp-blank "]*::")
+(defcustom muse-dl-entry-regexp
+  (rx buffer-start (0+ blank) "::")
   "Regexp used to match a definition list entry."
   :type 'regexp
   :group 'muse-regexp)
 
 (defcustom muse-table-field-regexp
-  (concat "[" muse-regexp-blank "]+\\(|+\\)\\(?:["
-          muse-regexp-blank "]\\|$\\)")
+  (rx (1+ blank) (group (1+ "|")) (or blank line-end))
   "Regexp used to match table separators when publishing."
   :type 'regexp
   :group 'muse-regexp)
 
-(defcustom muse-table-line-regexp (concat ".*" muse-table-field-regexp ".*")
+(defcustom muse-table-line-regexp
+  (rx-to-string `(and (0+ not-newline)
+                      (regexp ,muse-table-field-regexp)
+                      (0+ not-newline)))
   "Regexp used to match a table line when publishing."
   :type 'regexp
   :group 'muse-regexp)
 
-(defcustom muse-table-hline-regexp (concat "[" muse-regexp-blank
-                                           "]*|[-+]+|[" muse-regexp-blank
-                                           "]*")
+(defcustom muse-table-hline-regexp
+  (rx (0+ blank) "|" (1+ (any "-+")) "|" (0+ blank))
   "Regexp used to match a horizontal separator line in a table."
   :type 'regexp
   :group 'muse-regexp)
 
-(defcustom muse-table-el-border-regexp (concat "[" muse-regexp-blank "]*"
-                                               "\\+\\(-*\\+\\)+"
-                                               "[" muse-regexp-blank "]*")
+(defcustom muse-table-el-border-regexp
+  (rx (0+ blank) "+" (1+ (group (0+ "-") "+")) (0+ blank))
   "Regexp used to match the beginning and end of a table.el-style table."
   :type 'regexp
   :group 'muse-regexp)
 
-(defcustom muse-table-el-line-regexp (concat "[" muse-regexp-blank "]*"
-                                             "|\\(.*|\\)*"
-                                           "[" muse-regexp-blank "]*")
+(defcustom muse-table-el-line-regexp
+  (rx (0+ blank) "|" (0+ (group (0+ not-newline) "|")) (0+ blank))
   "Regexp used to match a table line of a table.el-style table."
   :type 'regexp
   :group 'muse-regexp)
 
 (defcustom muse-tag-regexp
-  (concat "<\\([^/" muse-regexp-blank "\n][^" muse-regexp-blank
-          "</>\n]*\\)\\(\\s-+[^<>]+[^</>\n]\\)?\\(/\\)?>")
+  (rx "<"
+      (group (not (any "/\n" blank))
+             (0+ (not (any "</>\n" blank))))
+      (optional (group (1+ (syntax whitespace))
+                       (1+ (not (any "<>")))
+                       (not (any "</>\n"))))
+      (optional (group "/"))
+      ">")
   "A regexp used to find XML-style tags within a buffer when publishing.
 Group 1 should be the tag name, group 2 the properties, and group
 3 the optional immediate ending slash."
@@ -219,14 +233,16 @@ Group 1 should be the tag name, group 2 the properties, and group
   :group 'muse-regexp)
 
 (defcustom muse-explicit-link-regexp
-  "\\[\\[\\([^][\n]+\\)\\]\\(?:\\[\\([^][\n]+\\)\\]\\)?\\]"
+  (rx "[[" (group (1+ (not (any "][\n")))) "]"
+      (optional "[" (group (1+ (not (any "][\n")))) "]")
+      "]")
   "Regexp used to match [[target][description]] links.
 Paren group 1 must match the URL, and paren group 2 the description."
   :type 'regexp
   :group 'muse-regexp)
 
 (defcustom muse-implicit-link-regexp
-  (concat "\\([^" muse-regexp-blank "\n]+\\)")
+  (rx (group (1+ (not blank))))
   "Regexp used to match an implicit link.
 An implicit link is the largest block of text to be checked for
 URLs and bare WikiNames by the `muse-link-at-point' function.
@@ -246,15 +262,20 @@ them, you will have to modify this."
 ;;; Regexps used to determine file types
 
 (defcustom muse-file-regexp
-  (concat "\\`[~/]\\|\\?\\|/\\'\\|\\."
-          "\\(html?\\|pdf\\|mp3\\|el\\|zip\\|txt\\|tar\\)"
-          "\\(\\.\\(gz\\|bz2\\)\\)?\\'")
+  (rx (or (and buffer-start (any "~/"))
+          "?"
+          (and "/" buffer-end)
+          (and "." (or "html" "htm" "pdf" "mp3" "el" "zip" "txt" "tar")
+               (optional (and "." (or "gz" "bz2")))
+               buffer-end)))
   "A link matching this regexp will be regarded as a link to a file."
   :type 'regexp
   :group 'muse-regexp)
 
 (defcustom muse-image-regexp
-  "\\.\\(eps\\|gif\\|jp\\(e?g\\)\\|p\\(bm\\|ng\\)\\|tiff\\|x\\([bp]m\\)\\)\\'"
+  (rx "."
+      (group (or "eps" "gif" "jpg" "jpeg" "pbm" "png" "tiff" "xbm" "xpm"))
+      buffer-end)
   "A link matching this regexp will be published inline as an image.
 For example:
 
