@@ -28,7 +28,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Muse Project Maintainance
+;; Muse Project Maintenance
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -270,7 +270,7 @@ needed filesystem attributes."
   :group 'muse-project)
 
 (defun muse-project-recurse-directory (base)
-  "Recusively retrieve all of the directories underneath BASE.
+  "Recursively retrieve all of the directories underneath BASE.
 A list of these directories is returned.
 
 Directories starting with \".\" will be ignored, as well as those

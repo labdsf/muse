@@ -201,7 +201,7 @@ handler, look at `muse-browse-url-dict' instead."
 (defun muse-browse-url-doi (url)
   "If this is a DOI URL, browse it.
 
-DOI's (digitial object identifiers) are a standard identifier
+DOI's (digital object identifiers) are a standard identifier
 used in the publishing industry."
   (let ((doi-url (muse-resolve-url-doi url)))
     (when doi-url

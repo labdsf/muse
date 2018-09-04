@@ -1009,7 +1009,7 @@ be a very unlikely case.
 ** URL protocols (lisp/muse-protocols.el)
 
 *** Add support for DOI's.
-DOI's (digitial object identifiers) are a standard identifier used in
+DOI's (digital object identifiers) are a standard identifier used in
 the publishing industry.
 
 *** Add support for "dict:" URLs.

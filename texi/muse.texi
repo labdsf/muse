@@ -537,7 +537,7 @@ lines.
 
 The command @kbd{M-x muse-project-publish-this-file} will publish the
 current document to any available publishing style (a publishing style
-is an output format, like HTML or Docbook), placing the output in the
+is an output format, like HTML or DocBook), placing the output in the
 current directory.  If you are in Muse Mode, this command will be bound
 to @kbd{C-c C-t}.  If the file has been published recently, and its
 contents have not changed, running @kbd{C-c C-t} again will not publish
@@ -2355,7 +2355,7 @@ This publishing style is used to generate DocBook XML files.
 
 @cindex publishing styles, docbook
 @item docbook
-Publish a file in Docbook form.
+Publish a file in DocBook form.
 
 @end table
 

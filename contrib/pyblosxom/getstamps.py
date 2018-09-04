@@ -12,7 +12,7 @@ History:
 1.1
 
 * Michael Olson <http://www.mwolson.org/> adapted this for Emacs Muse
-  and added a few more exluded patterns for other version control
+  and added a few more excluded patterns for other version control
   systems.
 
 1.0

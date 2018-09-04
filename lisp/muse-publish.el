@@ -826,12 +826,12 @@ the file is published no matter what."
                      (concat (muse-path-sans-extension output-path)
                              output-suffix)
                    output-path))
-         (threshhold (nth 7 (file-attributes file))))
-    (if (not threshhold)
+         (threshold (nth 7 (file-attributes file))))
+    (if (not threshold)
         (message "Please save %s before publishing" file)
       (when (or force (file-newer-than-file-p file target))
         (if (and muse-publish-report-threshhold
-                 (> threshhold
+                 (> threshold
                     muse-publish-report-threshhold))
             (message "Publishing %s ..." file))
         (muse-with-temp-buffer
@@ -889,7 +889,7 @@ supplied."
 ;; Default publishing rules
 
 (defun muse-publish-section-close (depth)
-  "Seach forward for the closing tag of given DEPTH."
+  "Search forward for the closing tag of given DEPTH."
   (let (not-end)
     (save-excursion
       (while (and (setq not-end (re-search-forward
@@ -2100,7 +2100,7 @@ explanation of how it works."
 (put 'muse-publish-include-tag 'muse-dangerous-tag t)
 
 (defun muse-publish-mark-up-tag (beg end attrs)
-  "Run an Emacs Lisp function on the region delimted by this tag.
+  "Run an Emacs Lisp function on the region delimited by this tag.
 
 <markup function=\"...\" style=\"...\" exact=\"...\">
 

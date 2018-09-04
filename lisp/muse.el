@@ -299,7 +299,7 @@ debugging purposes rather than removing it."
                 (if (and (boundp 'muse-batch-publishing-p)
                          muse-batch-publishing-p)
                     (progn
-                      (message "%s: Error occured: %s"
+                      (message "%s: Error occurred: %s"
                                (muse-page-name) err)
                       (backtrace))
                   (muse-display-warning

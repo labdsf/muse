@@ -106,7 +106,7 @@ all the files in the project."
   :group 'muse-wiki)
 
 (defcustom muse-wiki-ignore-bare-project-names nil
-  "Determine whether project names without a page specifer are links.
+  "Determine whether project names without a page specifier are links.
 
 If non-nil, project names without a page specifier will not be
 considered links.

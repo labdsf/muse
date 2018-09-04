@@ -25,7 +25,7 @@
 ;;; Commentary:
 
 ;; It works only for article type docbook docs and recognize
-;; followings elements: article, sect1, sect2, sect3, title,
+;; following elements: article, sect1, sect2, sect3, title,
 
 ;;; Contributors:
 

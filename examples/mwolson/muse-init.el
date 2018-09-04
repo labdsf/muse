@@ -275,7 +275,7 @@ If FILE is not specified, use the published version of the current file."
     (insert "[[" link "][" text "]]")))
 
 (defun my-muse-surround-math (&optional beg end)
-  "If a region is higlighted, surround it with <math>...</math>.
+  "If a region is highlighted, surround it with <math>...</math>.
 If no region is highlighted, insert <math></math> and leave the point
 between the two tags."
   (interactive (list (ignore-errors (mark)) (point)))

@@ -32,7 +32,7 @@
 ;; realised that could just circumvent the anchors problem by always
 ;; pointing toward the full length entry which all of my split
 ;; functions generate now. Given the complexity that this has
-;; introduced taht might not have been a bad idea.
+;; introduced that might not have been a bad idea.
 
 ;; These functions directly over-write the original versions in
 ;; muse-publish.
@@ -135,7 +135,7 @@ the file is published no matter what."
           (muse-publish-markup-functions muse-publish-presplit-functions)
           (muse-publishing-styles)
           (muse-publish-presplit-splitting-file file))
-      ;; great an empty style. The name is just wierd, so that
+      ;; great an empty style. The name is just weird, so that
       ;; it won't preexist (which makes muse crash). The let
       ;; binding should mean that it disappears.
       (muse-define-style "ThePurposeIsNotToDescribeTheWorldButToChangeIt")
@@ -304,7 +304,7 @@ the anchor will be output"
          ;; buffer as an int, or a output file location
          (anchor-position-or-location
           (aget anchor-alist anchor))
-         ;; this should definately be the output file location
+         ;; this should definitely be the output file location
          (anchor-output
           (if (stringp anchor-position-or-location)
               anchor-position-or-location
