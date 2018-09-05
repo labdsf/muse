@@ -1,6 +1,6 @@
 .PHONY: all lisp contrib autoloads examples experimental doc info-only
 .PHONY: clean realclean distclean fullclean install-info install-bin install
-.PHONY: test dist release upload elpa
+.PHONY: test unit dist release upload elpa
 
 DEFS = $(shell test -f Makefile.defs && echo Makefile.defs \
 	|| echo Makefile.defs.default)
@@ -52,6 +52,9 @@ install: install-bin install-info
 
 test: 
 	(cd lisp && $(MAKE) test)
+
+unit:
+	cask exec ert-runner
 
 distclean:
 	for i in $(SUBDIRS); do \
