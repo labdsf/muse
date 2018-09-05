@@ -274,7 +274,7 @@ them, you will have to modify this."
 
 (defcustom muse-image-regexp
   (rx "."
-      (group (or "eps" "gif" "jpg" "jpeg" "pbm" "png" "tiff" "xbm" "xpm"))
+      (or "eps" "gif" "jpg" "jpeg" "pbm" "png" "tiff" "xbm" "xpm")
       buffer-end)
   "A link matching this regexp will be published inline as an image.
 For example:
